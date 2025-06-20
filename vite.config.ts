@@ -5,6 +5,7 @@ import { defineConfig } from "vite"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "https://pedroffda.github.io/pyne2025-vending-machine/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
