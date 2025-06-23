@@ -34,7 +34,7 @@ Antes de começar, você precisará ter o seguinte software instalado:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO>
+    git clone https://github.com/Pedroffda/pyne2025-vending-machine
     cd vending-machine
     ```
 
