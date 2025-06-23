@@ -24,7 +24,6 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
-// Adiciona a propriedade ethereum ao objeto window para o TypeScript
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +31,6 @@ declare global {
   }
 }
 
-// ABI do contrato (sem alterações)
 const CONTRACT_ABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -65,20 +63,15 @@ const CONTRACT_ABI = [
   },
 ];
 
-// --- MODIFICADO ---
-// Endereço da máquina padrão. Pode ser o da sua máquina principal.
-const DEFAULT_CONTRACT_ADDRESS = "0xD005c37c10540e12d72AB9DA39d3422B95435492"; // Coloque aqui o endereço do seu contrato principal
+const DEFAULT_CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_DEFAULT_CONTRACT_ADDRESS || "";
 
 function App() {
   const [account, setAccount] = useState<string>("");
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-
-  // --- NOVOS ESTADOS ---
-  // Guarda o endereço da máquina com a qual estamos interagindo no momento
   const [activeContractAddress, setActiveContractAddress] = useState<string>(
     DEFAULT_CONTRACT_ADDRESS
   );
-  // Guarda o valor do input onde o usuário digita o novo endereço
   const [targetContractAddress, setTargetContractAddress] =
     useState<string>("");
 
@@ -90,8 +83,6 @@ function App() {
   const [refillAmount, setRefillAmount] = useState<string>("10");
   const [cupcakeAnimation, setCupcakeAnimation] = useState<boolean>(false);
 
-  // --- MODIFICADO ---
-  // Conectar carteira agora usa o endereço ativo do estado
   const connectWallet = async () => {
     try {
       if (typeof window.ethereum !== "undefined") {
@@ -100,7 +91,6 @@ function App() {
         const signer = await provider.getSigner();
         setAccount(accounts[0]);
 
-        // Usa o endereço ativo do estado para criar a instância do contrato
         const contract = new ethers.Contract(
           activeContractAddress,
           CONTRACT_ABI,
@@ -129,7 +119,6 @@ function App() {
     }
   };
 
-  // Carregar dados do contrato (sem alterações na lógica)
   const loadContractData = async (
     contract: ethers.Contract,
     userAccount: string
@@ -152,7 +141,6 @@ function App() {
     }
   };
 
-  // Comprar cupcakes (sem alterações na lógica)
   const purchaseCupcakes = async () => {
     if (!contract || !purchaseAmount) return;
     try {
@@ -181,7 +169,6 @@ function App() {
     }
   };
 
-  // Reabastecer (só owner) (sem alterações na lógica)
   const refillMachine = async () => {
     if (!contract || !refillAmount) return;
     try {
@@ -200,15 +187,13 @@ function App() {
       console.error("Erro no refill:", error);
       toast.error("❌ Erro no Reabastecimento", {
         description:
-          (error as { reason?: string })?.reason || "Falha ao reabastecer",
+          (error as { reason?: string })?.reason ?? "Falha ao reabastecer",
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // --- NOVA FUNÇÃO ---
-  // Lógica para carregar uma nova máquina a partir de um endereço
   const switchMachine = async () => {
     if (!ethers.isAddress(targetContractAddress)) {
       toast.error("❌ Endereço Inválido", {
@@ -227,7 +212,6 @@ function App() {
         )}...${targetContractAddress.slice(-4)}`,
       });
 
-      // Resetar estados antigos para não mostrar dados incorretos durante a troca
       setContractBalance(0);
       setUserBalance(0);
       setIsOwner(false);
@@ -242,7 +226,7 @@ function App() {
       );
 
       setContract(newContract);
-      setActiveContractAddress(targetContractAddress); // Atualiza o endereço ativo
+      setActiveContractAddress(targetContractAddress);
 
       await loadContractData(newContract, account);
 
@@ -255,7 +239,6 @@ function App() {
         description:
           "Verifique se o endereço está correto e se o contrato existe na rede atual.",
       });
-      // Em caso de erro, reverte para a máquina padrão para evitar um estado quebrado
       setActiveContractAddress(DEFAULT_CONTRACT_ADDRESS);
     } finally {
       setLoading(false);
@@ -336,8 +319,6 @@ function App() {
               </CardContent>
             </Card>
 
-            {/* --- MODIFICADO --- */}
-            {/* Status da Máquina (agora mostra o endereço ativo) */}
             <Card className="shadow-xl border-2 border-blue-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -520,8 +501,6 @@ function App() {
                 </Card>
               )}
 
-              {/* --- NOVO CARD --- */}
-              {/* Card para trocar de máquina */}
               <Card className="shadow-xl border-2 border-gray-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
