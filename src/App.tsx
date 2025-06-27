@@ -11,11 +11,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ethers } from "ethers";
 import {
   Cake,
   Coins,
   Crown,
+  Globe,
   RefreshCw,
   ShoppingCart,
   Star,
@@ -273,22 +281,25 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center gap-4 mb-4">
-            <Button
-              variant={i18n.language === "en" ? "default" : "outline"}
-              onClick={() => i18n.changeLanguage("en")}
+        {/* Language Switcher and Header */}
+        <div className="flex justify-end mb-4">
+          <div className="flex items-center gap-2">
+            <Globe className="h-5 w-5 text-gray-600" />
+            <Select
+              value={i18n.language}
+              onValueChange={(lang) => i18n.changeLanguage(lang)}
             >
-              EN
-            </Button>
-            <Button
-              variant={i18n.language === "pt" ? "default" : "outline"}
-              onClick={() => i18n.changeLanguage("pt")}
-            >
-              PT-BR
-            </Button>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="pt">Português</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+        </div>
+        <div className="text-center mb-8">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent mb-4">
             {t("header.title")}
           </h1>
