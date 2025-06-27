@@ -18,6 +18,7 @@ import {
   Crown,
   RefreshCw,
   ShoppingCart,
+  Star,
   User,
   Wallet,
 } from "lucide-react";
@@ -615,6 +616,17 @@ function App() {
                 className="h-16 w-16 rounded-full border-2 border-purple-200"
               />
               <span>@Pedroffda</span>
+            </a>
+          </div>
+          <div className="mt-8 border-t pt-6">
+            <a
+              href="https://github.com/Pedroffda/pyne2025-vending-machine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-gray-700 hover:text-purple-500 transition-colors"
+            >
+              <Star className="h-5 w-5 text-yellow-400" />
+              <span>Deixe uma estrela no GitHub!</span>
             </a>
           </div>
         </div>
