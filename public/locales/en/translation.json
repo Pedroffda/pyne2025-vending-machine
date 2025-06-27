@@ -1,0 +1,86 @@
+{
+  "header": {
+    "title": "🧁 Cupcake Vending Machine",
+    "subtitle": "A decentralized cupcake vending machine on the blockchain!"
+  },
+  "wallet": {
+    "connect_wallet": "Connect Wallet",
+    "connect_wallet_desc": "Connect your MetaMask wallet to start buying cupcakes!",
+    "connect_metamask": "Connect MetaMask"
+  },
+  "account": {
+    "your_account": "Your Account",
+    "address": "Address",
+    "your_cupcakes": "Your Cupcakes",
+    "owner": "Owner"
+  },
+  "machine": {
+    "title": "Vending Machine",
+    "address": "Address",
+    "available_stock": "Available Stock",
+    "price_per_cupcake": "Price per Cupcake"
+  },
+  "actions": {
+    "quick_actions": "Quick Actions",
+    "refresh_data": "Refresh Data",
+    "cupcakes_available": "Cupcakes available!",
+    "stock_empty": "Stock empty!"
+  },
+  "purchase": {
+    "buy_cupcakes": "Buy Cupcakes",
+    "buy_cupcakes_desc": "Each cupcake costs 0.001 ETH",
+    "quantity": "Quantity",
+    "total_price": "Total price",
+    "buying": "Buying...",
+    "buy_cupcakes_button": "Buy Cupcakes 🧁"
+  },
+  "owner_panel": {
+    "refill_machine": "Refill Machine",
+    "refill_machine_desc": "Only the owner can refill",
+    "quantity_to_add": "Quantity to add",
+    "refilling": "Refilling...",
+    "refill_with_amount": "Refill with {{amount}} cupcakes"
+  },
+  "switch_machine": {
+    "title": "Switch Machine",
+    "description": "Enter the address of another Vending Machine to interact with it.",
+    "contract_address": "Contract Address",
+    "example_contracts": "Or select an example contract:",
+    "load_machine": "Load Machine",
+    "loading": "Loading..."
+  },
+  "footer": {
+    "developed_by": "Developed by:",
+    "leave_star": "Leave a star on GitHub!"
+  },
+  "toasts": {
+    "wallet_connected": "Wallet Connected!",
+    "wallet_connected_desc": "Connected as: {{account}}",
+    "metamask_not_found": "MetaMask not found",
+    "metamask_not_found_desc": "Please install MetaMask to continue",
+    "connection_error": "Connection Error",
+    "connection_error_desc": "Failed to connect to wallet",
+    "data_load_error": "Error loading contract data",
+    "data_load_error_desc": "Check if the contract is on the correct network and if the address in the app is updated.",
+    "purchase_error": "Purchase Error",
+    "purchase_error_desc": "Failed to buy cupcakes",
+    "transaction_sent": "Transaction Sent",
+    "transaction_sent_desc": "Waiting for confirmation...",
+    "purchase_successful": "Purchase Successful!",
+    "purchase_successful_desc": "You bought {{amount}} cupcake(s)!",
+    "refill_sent": "Refilling...",
+    "refill_sent_desc": "Waiting for confirmation...",
+    "refill_successful": "Machine Refilled!",
+    "refill_successful_desc": "Added {{amount}} cupcakes to the stock!",
+    "refill_error": "Refill Error",
+    "refill_error_desc": "Failed to refill",
+    "invalid_address": "Invalid Address",
+    "invalid_address_desc": "Please enter a valid Ethereum contract address.",
+    "switching_machine": "Switching machine...",
+    "switching_machine_desc": "Connecting to contract at {{address}}",
+    "machine_loaded": "Machine Loaded!",
+    "machine_loaded_desc": "You are interacting with a new cupcake machine.",
+    "machine_load_failed": "Failed to load machine",
+    "machine_load_failed_desc": "Check if the address is correct and if the contract exists on the current network."
+  }
+}

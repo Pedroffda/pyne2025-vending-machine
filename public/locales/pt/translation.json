@@ -1,0 +1,86 @@
+{
+  "header": {
+    "title": "🧁 Cupcake Vending Machine",
+    "subtitle": "Máquina de venda de cupcakes descentralizada na blockchain!"
+  },
+  "wallet": {
+    "connect_wallet": "Conectar Carteira",
+    "connect_wallet_desc": "Conecte sua carteira MetaMask para começar a comprar cupcakes!",
+    "connect_metamask": "Conectar MetaMask"
+  },
+  "account": {
+    "your_account": "Sua Conta",
+    "address": "Endereço",
+    "your_cupcakes": "Seus Cupcakes",
+    "owner": "Proprietário"
+  },
+  "machine": {
+    "title": "Máquina de Venda",
+    "address": "Endereço",
+    "available_stock": "Estoque Disponível",
+    "price_per_cupcake": "Preço por Cupcake"
+  },
+  "actions": {
+    "quick_actions": "Ações Rápidas",
+    "refresh_data": "Atualizar Dados",
+    "cupcakes_available": "Cupcakes disponíveis!",
+    "stock_empty": "Estoque vazio!"
+  },
+  "purchase": {
+    "buy_cupcakes": "Comprar Cupcakes",
+    "buy_cupcakes_desc": "Cada cupcake custa 0.001 ETH",
+    "quantity": "Quantidade",
+    "total_price": "Preço total",
+    "buying": "Comprando...",
+    "buy_cupcakes_button": "Comprar Cupcakes 🧁"
+  },
+  "owner_panel": {
+    "refill_machine": "Reabastecer Máquina",
+    "refill_machine_desc": "Apenas o proprietário pode reabastecer",
+    "quantity_to_add": "Quantidade para adicionar",
+    "refilling": "Reabastecendo...",
+    "refill_with_amount": "Reabastecer com {{amount}} cupcakes"
+  },
+  "switch_machine": {
+    "title": "Trocar de Máquina",
+    "description": "Insira o endereço de outra Vending Machine para interagir com ela.",
+    "contract_address": "Endereço do Contrato",
+    "example_contracts": "Ou selecione um contrato de exemplo:",
+    "load_machine": "Carregar Máquina",
+    "loading": "Carregando..."
+  },
+  "footer": {
+    "developed_by": "Desenvolvido por:",
+    "leave_star": "Deixe uma estrela no GitHub!"
+  },
+  "toasts": {
+    "wallet_connected": "Carteira Conectada!",
+    "wallet_connected_desc": "Conectado como: {{account}}",
+    "metamask_not_found": "MetaMask não encontrado",
+    "metamask_not_found_desc": "Por favor, instale o MetaMask para continuar",
+    "connection_error": "Erro de Conexão",
+    "connection_error_desc": "Falha ao conectar com a carteira",
+    "data_load_error": "Erro ao carregar dados do contrato",
+    "data_load_error_desc": "Verifique se o contrato está na rede correta e se o endereço no app está atualizado.",
+    "purchase_error": "Erro na Compra",
+    "purchase_error_desc": "Falha ao comprar cupcakes",
+    "transaction_sent": "Transação Enviada",
+    "transaction_sent_desc": "Aguardando confirmação...",
+    "purchase_successful": "Compra Realizada!",
+    "purchase_successful_desc": "Você comprou {{amount}} cupcake(s)!",
+    "refill_sent": "Reabastecendo...",
+    "refill_sent_desc": "Aguardando confirmação...",
+    "refill_successful": "Máquina Reabastecida!",
+    "refill_successful_desc": "Adicionados {{amount}} cupcakes ao estoque!",
+    "refill_error": "Erro no Reabastecimento",
+    "refill_error_desc": "Falha ao reabastecer",
+    "invalid_address": "Endereço Inválido",
+    "invalid_address_desc": "Por favor, insira um endereço de contrato Ethereum válido.",
+    "switching_machine": "Trocando de máquina...",
+    "switching_machine_desc": "Conectando ao contrato em {{address}}",
+    "machine_loaded": "Máquina Carregada!",
+    "machine_loaded_desc": "Você está interagindo com uma nova máquina de cupcakes.",
+    "machine_load_failed": "Falha ao carregar máquina",
+    "machine_load_failed_desc": "Verifique se o endereço está correto e se o contrato existe na rede atual."
+  }
+}

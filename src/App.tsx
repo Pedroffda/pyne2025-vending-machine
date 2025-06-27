@@ -23,6 +23,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 declare global {
@@ -75,6 +76,8 @@ const EXAMPLE_CONTRACTS = [
 ];
 
 function App() {
+  const { t, i18n } = useTranslation();
+
   useState(() => {
     if (!DEFAULT_CONTRACT_ADDRESS) {
       console.error(
@@ -155,9 +158,8 @@ function App() {
       setIsOwner(owner.toLowerCase() === userAccount.toLowerCase());
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
-      toast.error("❌ Erro ao carregar dados do contrato", {
-        description:
-          "Verifique se o contrato está na rede correta e se o endereço no app está atualizado.",
+      toast.error(t("toasts.data_load_error"), {
+        description: t("toasts.data_load_error_desc"),
       });
     }
   };
@@ -169,21 +171,22 @@ function App() {
       const amount = Number.parseInt(purchaseAmount);
       const value = ethers.parseEther((amount * 0.001).toString());
       const tx = await contract.purchase(amount, { value });
-      toast.info("🔄 Transação Enviada", {
-        description: "Aguardando confirmação...",
+      toast.info(t("toasts.transaction_sent"), {
+        description: t("toasts.transaction_sent_desc"),
       });
       await tx.wait();
       setCupcakeAnimation(true);
       setTimeout(() => setCupcakeAnimation(false), 2000);
-      toast.success("🧁 Compra Realizada!", {
-        description: `Você comprou ${amount} cupcake${amount > 1 ? "s" : ""}!`,
+      toast.success(t("toasts.purchase_successful"), {
+        description: t("toasts.purchase_successful_desc", { amount }),
       });
       await loadContractData(contract, account);
     } catch (error) {
       console.error("Erro na compra:", error);
-      toast.error("❌ Erro na Compra", {
+      toast.error(t("toasts.purchase_error"), {
         description:
-          (error as { reason?: string })?.reason || "Falha ao comprar cupcakes",
+          (error as { reason?: string })?.reason ||
+          t("toasts.purchase_error_desc"),
       });
     } finally {
       setLoading(false);
@@ -196,19 +199,20 @@ function App() {
       setLoading(true);
       const amount = Number.parseInt(refillAmount);
       const tx = await contract.refill(amount);
-      toast.info("🔄 Reabastecendo...", {
-        description: "Aguardando confirmação...",
+      toast.info(t("toasts.refill_sent"), {
+        description: t("toasts.refill_sent_desc"),
       });
       await tx.wait();
-      toast.success("✅ Máquina Reabastecida!", {
-        description: `Adicionados ${amount} cupcakes ao estoque!`,
+      toast.success(t("toasts.refill_successful"), {
+        description: t("toasts.refill_successful_desc", { amount }),
       });
       await loadContractData(contract, account);
     } catch (error) {
       console.error("Erro no refill:", error);
-      toast.error("❌ Erro no Reabastecimento", {
+      toast.error(t("toasts.refill_error"), {
         description:
-          (error as { reason?: string })?.reason ?? "Falha ao reabastecer",
+          (error as { reason?: string })?.reason ??
+          t("toasts.refill_error_desc"),
       });
     } finally {
       setLoading(false);
@@ -217,20 +221,21 @@ function App() {
 
   const switchMachine = async () => {
     if (!ethers.isAddress(targetContractAddress)) {
-      toast.error("❌ Endereço Inválido", {
-        description:
-          "Por favor, insira um endereço de contrato Ethereum válido.",
+      toast.error(t("toasts.invalid_address"), {
+        description: t("toasts.invalid_address_desc"),
       });
       return;
     }
 
     try {
       setLoading(true);
-      toast.info("🔄 Trocando de máquina...", {
-        description: `Conectando ao contrato em ${targetContractAddress.slice(
-          0,
-          6
-        )}...${targetContractAddress.slice(-4)}`,
+      toast.info(t("toasts.switching_machine"), {
+        description: t("toasts.switching_machine_desc", {
+          address: `${targetContractAddress.slice(
+            0,
+            6
+          )}...${targetContractAddress.slice(-4)}`,
+        }),
       });
 
       setContractBalance(0);
@@ -251,14 +256,13 @@ function App() {
 
       await loadContractData(newContract, account);
 
-      toast.success("✅ Máquina Carregada!", {
-        description: "Você está interagindo com uma nova máquina de cupcakes.",
+      toast.success(t("toasts.machine_loaded"), {
+        description: t("toasts.machine_loaded_desc"),
       });
     } catch (error) {
       console.error("Erro ao trocar de máquina:", error);
-      toast.error("❌ Falha ao carregar máquina", {
-        description:
-          "Verifique se o endereço está correto e se o contrato existe na rede atual.",
+      toast.error(t("toasts.machine_load_failed"), {
+        description: t("toasts.machine_load_failed_desc"),
       });
       setActiveContractAddress(DEFAULT_CONTRACT_ADDRESS);
     } finally {
@@ -271,12 +275,24 @@ function App() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
+          <div className="flex justify-center items-center gap-4 mb-4">
+            <Button
+              variant={i18n.language === "en" ? "default" : "outline"}
+              onClick={() => i18n.changeLanguage("en")}
+            >
+              EN
+            </Button>
+            <Button
+              variant={i18n.language === "pt" ? "default" : "outline"}
+              onClick={() => i18n.changeLanguage("pt")}
+            >
+              PT-BR
+            </Button>
+          </div>
           <h1 className="text-6xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent mb-4">
-            🧁 Cupcake Vending Machine
+            {t("header.title")}
           </h1>
-          <p className="text-xl text-gray-600">
-            Máquina de venda de cupcakes descentralizada na blockchain!
-          </p>
+          <p className="text-xl text-gray-600">{t("header.subtitle")}</p>
         </div>
 
         {/* Conexão da Carteira */}
@@ -284,10 +300,10 @@ function App() {
           <Card className="max-w-md mx-auto mb-8 shadow-xl border-2 border-pink-200">
             <CardHeader className="text-center">
               <CardTitle className="flex items-center justify-center gap-2">
-                <Wallet className="h-6 w-6" /> Conectar Carteira
+                <Wallet className="h-6 w-6" /> {t("wallet.connect_wallet")}
               </CardTitle>
               <CardDescription>
-                Conecte sua carteira MetaMask para começar a comprar cupcakes!
+                {t("wallet.connect_wallet_desc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -295,7 +311,8 @@ function App() {
                 onClick={connectWallet}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
-                <Wallet className="mr-2 h-4 w-4" /> Conectar MetaMask
+                <Wallet className="mr-2 h-4 w-4" />{" "}
+                {t("wallet.connect_metamask")}
               </Button>
             </CardContent>
           </Card>
@@ -305,21 +322,23 @@ function App() {
             <Card className="shadow-xl border-2 border-green-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5" /> Sua Conta{" "}
+                  <User className="h-5 w-5" /> {t("account.your_account")}{" "}
                   {isOwner && <Crown className="h-5 w-5 text-yellow-500" />}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div>
-                    <Label className="text-sm text-gray-600">Endereço</Label>
+                    <Label className="text-sm text-gray-600">
+                      {t("account.address")}
+                    </Label>
                     <p className="font-mono text-sm bg-gray-100 p-2 rounded">
                       {account.slice(0, 6)}...{account.slice(-4)}
                     </p>
                   </div>
                   <div>
                     <Label className="text-sm text-gray-600">
-                      Seus Cupcakes
+                      {t("account.your_cupcakes")}
                     </Label>
                     <div className="flex items-center gap-2">
                       <Cake className="h-5 w-5 text-pink-500" />
@@ -333,7 +352,7 @@ function App() {
                       variant="secondary"
                       className="bg-yellow-100 text-yellow-800"
                     >
-                      <Crown className="h-3 w-3 mr-1" /> Proprietário
+                      <Crown className="h-3 w-3 mr-1" /> {t("account.owner")}
                     </Badge>
                   )}
                 </div>
@@ -343,10 +362,10 @@ function App() {
             <Card className="shadow-xl border-2 border-blue-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ShoppingCart className="h-5 w-5" /> Máquina de Venda
+                  <ShoppingCart className="h-5 w-5" /> {t("machine.title")}
                 </CardTitle>
                 <CardDescription>
-                  Endereço:{" "}
+                  {t("machine.address")}:{" "}
                   <span className="font-mono text-xs break-all">
                     {activeContractAddress}
                   </span>
@@ -356,7 +375,7 @@ function App() {
                 <div className="space-y-3">
                   <div>
                     <Label className="text-sm text-gray-600">
-                      Estoque Disponível
+                      {t("machine.available_stock")}
                     </Label>
                     <div className="flex items-center gap-2">
                       <div
@@ -373,7 +392,7 @@ function App() {
                   </div>
                   <div>
                     <Label className="text-sm text-gray-600">
-                      Preço por Cupcake
+                      {t("machine.price_per_cupcake")}
                     </Label>
                     <div className="flex items-center gap-2">
                       <Coins className="h-4 w-4 text-yellow-500" />
@@ -387,7 +406,7 @@ function App() {
             {/* Ações */}
             <Card className="shadow-xl border-2 border-purple-200">
               <CardHeader>
-                <CardTitle>Ações Rápidas</CardTitle>
+                <CardTitle>{t("actions.quick_actions")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -396,14 +415,15 @@ function App() {
                     variant="outline"
                     className="w-full"
                   >
-                    <RefreshCw className="mr-2 h-4 w-4" /> Atualizar Dados
+                    <RefreshCw className="mr-2 h-4 w-4" />{" "}
+                    {t("actions.refresh_data")}
                   </Button>
                   <div className="text-center">
                     <div className="text-6xl animate-pulse">🧁</div>
                     <p className="text-sm text-gray-600 mt-2">
                       {contractBalance > 0
-                        ? "Cupcakes disponíveis!"
-                        : "Estoque vazio!"}
+                        ? t("actions.cupcakes_available")
+                        : t("actions.stock_empty")}
                     </p>
                   </div>
                 </div>
@@ -418,13 +438,18 @@ function App() {
             <Card className="shadow-xl border-2 border-pink-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ShoppingCart className="h-5 w-5" /> Comprar Cupcakes
+                  <ShoppingCart className="h-5 w-5" />{" "}
+                  {t("purchase.buy_cupcakes")}
                 </CardTitle>
-                <CardDescription>Cada cupcake custa 0.001 ETH</CardDescription>
+                <CardDescription>
+                  {t("purchase.buy_cupcakes_desc")}
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="purchase-amount">Quantidade</Label>
+                  <Label htmlFor="purchase-amount">
+                    {t("purchase.quantity")}
+                  </Label>
                   <Input
                     id="purchase-amount"
                     type="number"
@@ -437,14 +462,14 @@ function App() {
                 </div>
                 <div className="bg-gray-50 p-3 rounded-lg">
                   <div className="flex justify-between text-sm">
-                    <span>Quantidade:</span>
+                    <span>{t("purchase.quantity")}:</span>
                     <span>
                       {purchaseAmount} cupcake
                       {Number.parseInt(purchaseAmount) > 1 ? "s" : ""}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Preço total:</span>
+                    <span>{t("purchase.total_price")}:</span>
                     <span>
                       {(Number.parseInt(purchaseAmount || "0") * 0.001).toFixed(
                         3
@@ -461,12 +486,12 @@ function App() {
                   {loading ? (
                     <>
                       <RefreshCw className="mr-2 h-4 w-4 animate-spin" />{" "}
-                      Comprando...
+                      {t("purchase.buying")}
                     </>
                   ) : (
                     <>
-                      <ShoppingCart className="mr-2 h-4 w-4" /> Comprar Cupcakes
-                      🧁
+                      <ShoppingCart className="mr-2 h-4 w-4" />{" "}
+                      {t("purchase.buy_cupcakes_button")}
                     </>
                   )}
                 </Button>
@@ -480,17 +505,17 @@ function App() {
                 <Card className="shadow-xl border-2 border-yellow-200">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Crown className="h-5 w-5 text-yellow-500" /> Reabastecer
-                      Máquina
+                      <Crown className="h-5 w-5 text-yellow-500" />{" "}
+                      {t("owner_panel.refill_machine")}
                     </CardTitle>
                     <CardDescription>
-                      Apenas o proprietário pode reabastecer
+                      {t("owner_panel.refill_machine_desc")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
                       <Label htmlFor="refill-amount">
-                        Quantidade para adicionar
+                        {t("owner_panel.quantity_to_add")}
                       </Label>
                       <Input
                         id="refill-amount"
@@ -509,12 +534,14 @@ function App() {
                       {loading ? (
                         <>
                           <RefreshCw className="mr-2 h-4 w-4 animate-spin" />{" "}
-                          Reabastecendo...
+                          {t("owner_panel.refilling")}
                         </>
                       ) : (
                         <>
-                          <RefreshCw className="mr-2 h-4 w-4" /> Reabastecer com{" "}
-                          {refillAmount} cupcakes
+                          <RefreshCw className="mr-2 h-4 w-4" />{" "}
+                          {t("owner_panel.refill_with_amount", {
+                            amount: refillAmount,
+                          })}
                         </>
                       )}
                     </Button>
@@ -525,17 +552,17 @@ function App() {
               <Card className="shadow-xl border-2 border-gray-200">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <RefreshCw className="h-5 w-5" /> Trocar de Máquina
+                    <RefreshCw className="h-5 w-5" />{" "}
+                    {t("switch_machine.title")}
                   </CardTitle>
                   <CardDescription>
-                    Insira o endereço de outra Vending Machine para interagir
-                    com ela.
+                    {t("switch_machine.description")}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <Label htmlFor="contract-address">
-                      Endereço do Contrato
+                      {t("switch_machine.contract_address")}
                     </Label>
                     <Input
                       id="contract-address"
@@ -548,7 +575,7 @@ function App() {
                   </div>
                   <div>
                     <Label className="text-sm text-gray-500">
-                      Ou selecione um contrato de exemplo:
+                      {t("switch_machine.example_contracts")}
                     </Label>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {EXAMPLE_CONTRACTS.map((address) => (
@@ -573,11 +600,12 @@ function App() {
                     {loading ? (
                       <>
                         <RefreshCw className="mr-2 h-4 w-4 animate-spin" />{" "}
-                        Carregando...
+                        {t("switch_machine.loading")}
                       </>
                     ) : (
                       <>
-                        <RefreshCw className="mr-2 h-4 w-4" /> Carregar Máquina
+                        <RefreshCw className="mr-2 h-4 w-4" />{" "}
+                        {t("switch_machine.load_machine")}
                       </>
                     )}
                   </Button>
@@ -589,7 +617,7 @@ function App() {
 
         {/* Footer */}
         <div className="text-center mt-12 p-6 bg-white/50 rounded-lg backdrop-blur-sm">
-          <p className="text-gray-600 mb-4">Desenvolvido por:</p>
+          <p className="text-gray-600 mb-4">{t("footer.developed_by")}</p>
           <div className="flex justify-center items-center gap-8">
             <a
               href="https://github.com/astromar2187"
@@ -626,7 +654,7 @@ function App() {
               className="inline-flex items-center gap-2 text-gray-700 hover:text-purple-500 transition-colors"
             >
               <Star className="h-5 w-5 text-yellow-400" />
-              <span>Deixe uma estrela no GitHub!</span>
+              <span>{t("footer.leave_star")}</span>
             </a>
           </div>
         </div>
