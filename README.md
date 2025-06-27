@@ -44,10 +44,10 @@ Antes de começar, você precisará ter o seguinte software instalado:
     ```
 
 3.  **Configure as Variáveis de Ambiente:**
-    - Crie um arquivo chamado `.env`.
+    - Crie um arquivo chamado `.env` na raiz da pasta `vending-machine`.
     - Adicione a seguinte linha, substituindo pelo endereço do seu contrato deployado:
       ```
-      NEXT_PUBLIC_DEFAULT_CONTRACT_ADDRESS="0xSEU_ENDERECO_DE_CONTRATO_AQUI"
+      VITE_DEFAULT_CONTRACT_ADDRESS="0xSEU_ENDERECO_DE_CONTRATO_AQUI"
       ```
 
 4.  **Deploy do Contrato Inteligente (se necessário):**

@@ -31,6 +31,7 @@ declare global {
   }
 }
 
+// ABI do contrato
 const CONTRACT_ABI = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -64,17 +65,35 @@ const CONTRACT_ABI = [
 ];
 
 const DEFAULT_CONTRACT_ADDRESS =
-  process.env.NEXT_PUBLIC_DEFAULT_CONTRACT_ADDRESS || "";
+  import.meta.env.VITE_DEFAULT_CONTRACT_ADDRESS || "";
+
+const EXAMPLE_CONTRACTS = [
+  "0x142D92d6D3147a4B473935B5ec71045Bdf6DbF0E",
+  "0xc96854f62b8871D10ea03499D8B95CBd335f9FF3",
+  "0x5D16bb80fB0AAb4202ECC901749F4288F14D2dDc",
+];
 
 function App() {
+  useState(() => {
+    if (!DEFAULT_CONTRACT_ADDRESS) {
+      console.error(
+        "Erro: A variável de ambiente VITE_DEFAULT_CONTRACT_ADDRESS não está definida em seu arquivo .env"
+      );
+      toast.error("Configuração Incompleta", {
+        description: "O endereço do contrato padrão não foi encontrado.",
+        duration: Infinity,
+      });
+    }
+  });
+
   const [account, setAccount] = useState<string>("");
   const [contract, setContract] = useState<ethers.Contract | null>(null);
+
   const [activeContractAddress, setActiveContractAddress] = useState<string>(
     DEFAULT_CONTRACT_ADDRESS
   );
   const [targetContractAddress, setTargetContractAddress] =
     useState<string>("");
-
   const [contractBalance, setContractBalance] = useState<number>(0);
   const [userBalance, setUserBalance] = useState<number>(0);
   const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -89,6 +108,7 @@ function App() {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const accounts = await provider.send("eth_requestAccounts", []);
         const signer = await provider.getSigner();
+
         setAccount(accounts[0]);
 
         const contract = new ethers.Contract(
@@ -525,6 +545,24 @@ function App() {
                       className="font-mono"
                     />
                   </div>
+                  <div>
+                    <Label className="text-sm text-gray-500">
+                      Ou selecione um contrato de exemplo:
+                    </Label>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                      {EXAMPLE_CONTRACTS.map((address) => (
+                        <Button
+                          key={address}
+                          variant="outline"
+                          size="sm"
+                          className="font-mono text-xs h-auto py-1 px-2"
+                          onClick={() => setTargetContractAddress(address)}
+                        >
+                          {`${address.slice(0, 6)}...${address.slice(-4)}`}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
                   <Button
                     onClick={switchMachine}
                     disabled={loading || !targetContractAddress}
@@ -550,12 +588,35 @@ function App() {
 
         {/* Footer */}
         <div className="text-center mt-12 p-6 bg-white/50 rounded-lg backdrop-blur-sm">
-          <p className="text-gray-600">
-            🚀 Powered by Ethereum & Smart Contracts |
-            <span className="ml-2">
-              Made with ❤️ for blockchain presentations
-            </span>
-          </p>
+          <p className="text-gray-600 mb-4">Desenvolvido por:</p>
+          <div className="flex justify-center items-center gap-8">
+            <a
+              href="https://github.com/astromar2187"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 text-gray-700 hover:text-pink-500 transition-colors"
+            >
+              <img
+                src="https://github.com/astromar2187.png"
+                alt="Foto de perfil de astromar2187"
+                className="h-16 w-16 rounded-full border-2 border-pink-200"
+              />
+              <span>@astromar2187</span>
+            </a>
+            <a
+              href="https://github.com/Pedroffda"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-2 text-gray-700 hover:text-purple-500 transition-colors"
+            >
+              <img
+                src="https://github.com/Pedroffda.png"
+                alt="Foto de perfil de Pedroffda"
+                className="h-16 w-16 rounded-full border-2 border-purple-200"
+              />
+              <span>@Pedroffda</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
