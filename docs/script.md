@@ -1,6 +1,8 @@
 # Blockchain para Pythonistas: Do Zero ao Smart Contract
 
 
+![Vending Machine](https://github.com/Pedroffda/pyne2025-vending-machine/raw/main/image.png)
+
 ### **Parte 1: Introdução ao MetaMask**
 
 **Objetivo:** Criar uma carteira na MetaMask, adicionar saldo (faucet) e preparar o ambiente inicial.
@@ -35,7 +37,7 @@
 1.  **Acessar o site: [https://www.alchemy.com/](https://www.alchemy.com/)**.
 2.  **Criar uma conta** (pode usar sua conta Google).
 3.  No dashboard, selecione a rede **Ethereum**.
-4.  Vá para a seção **‘My Apps’** e crie um novo aplicativo.
+4.  Vá para a seção **'My Apps'** e crie um novo aplicativo.
 5.  **Encontre e copie sua chave de API (API Key)** para a rede Sepolia. Você usará a URL RPC.
 
 -----
